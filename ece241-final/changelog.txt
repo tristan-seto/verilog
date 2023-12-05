@@ -1,0 +1,70 @@
+ UPDATED 11/30 3:30 AM
+ signals are outputting, however we are not moving on from STOP_HORIZONTAL state.
+
+ UPDATED 11/30 5:30 PM
+ display_counter is working normally, may be an issue with clock crossings
+ added hold variable in display_counter to keep done on for longer, which triggered the HEXs to start working
+
+ UPDATED 11/30 7:00 PM
+ changed as many posedge Clock to be @ (*), still not outputting changes, and CounterValue from display_counter is not being passed back
+
+ UPDATE 12/01 11:00 AM
+ changed all clocks to CLOCK_50 and somehow that worked, not sure how to incorporate rate divider now
+ Try sending CLOCK_50 to everything and using std_clock as an enable signal -- always @ (CLOCK_50), if(std_clock).
+
+ UPDATE 12/01 3:00PM
+ noticed must implement seperate colours for horizontal and vertical
+ to try: reconnecting all the different enable signals
+ check display_counter module as the counters are not outputing correctly (only starting from 3 and counting down at every cycle)
+
+ UPDATE 12/01 4:30 PM
+ half working, display_counter highest is not updating at all for different states
+ highest and 0 are being combined into one clock edge which is causing funky issues
+
+ UPDATE 12/02 1:00 PM
+ fixed hex-decoder, all #s from 0-25 should now be outputting the right numbers
+ added buffer for done signal, countdown now counting from 31 every time (no chance to set highest still)
+ to fix logic in display_counter; not executing on edge of std_clock
+ Made copy draft1.v to test display colours
+
+ UPDATE 12/02 2:00 PM
+ highest values are now being inputted but not at the correct cycle, might have to put highest calculation inside when count reaches 0
+ changed assignments to highest to be blocking assignments, seems to be working correctly
+
+ UPDATE 12/02 3:30 PM
+ Enable being held on for more than 1 posedge CLOCK_50 is skipping to the next cycle too fast
+ going to introduce hold states into FSM that waits for enable signal to go low before proceeding
+ hold states work, but signals do not stay on for hold state, try enabling same signals during hold states
+
+ UPDATE 12/03 12:00 AM
+ added hold states which seem to fix the signals, only would have to check if red is working as expected, or if it also needs a wait state
+
+ UPDATE 12/03 3:30 PM
+ placing a hold on testing the original code, made a copy as draft2.v
+ starting to implement the PS2 connections and VGA connections to the board - display them on the LEDRs (new hex decoder)
+ and use the swicthes as replacement R-G-B PS2 keyboard inputs
+ remaking entire lights_datapath module
+
+PARTNER-INTEGRATION UPDATE
+ PS2-KEYBOARD WILL SEND A 3-BIT INPUT (we can truncate and use each as an R/G/B signal), 
+    SIMULATE USING BUTTONS KEY0, KEY1, KEY2:
+    variable input_signal
+                                                go to:
+    3b’000 - vertical green, horizontal red     GV_HOLD
+    001 - vertical yellow, horizontal red       YV_HOLD
+    010 - vertical red, horizontal green        GH_HOLD
+    011 - vertical red, horizontal yellow       YH_HOLD
+    100 - all red, vertical nxt                 SV_HOLD                               
+    101 -          horizontal next              SH_HOLD
+
+ From Testing:
+ countdown doesn't display 0, maybe I want to do that?
+ mid-reset only goes to the beginning of the current state
+ green light executes before walk signal, which is fine - but we can introduce a walk-before-light for complexity controlled by SW[2]
+
+ UPDATE 12/04 11:00 AM
+ implemented forced signals, ModelSim shows they seem to be jumping around to different states properly
+ fixed Reset
+
+ UPDATE 12/04 11:00 PM
+ added 3-bit vga_signal according to above mappings (same for input_signal)
