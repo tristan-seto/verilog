@@ -1,7 +1,7 @@
-# verilog-hdl
-Hardware Description Language Projects
+# verilog
+Verilog Hardware Description Language Project
 
-This repository consists of projects (and possibly labs) I have worked on using Verilog HDL during my time at the University of Toronto.
+This repository consists of projects I have worked on using Verilog HDL during my time at the University of Toronto.
 The projects in this repository are based on the following courses:
 
 • ECE 241 F – Digital Systems (Fall 2023), Language: Verilog HDL
