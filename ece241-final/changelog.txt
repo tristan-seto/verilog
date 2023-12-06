@@ -68,3 +68,10 @@ PARTNER-INTEGRATION UPDATE
 
  UPDATE 12/04 11:00 PM
  added 3-bit vga_signal according to above mappings (same for input_signal)
+
+ UPDATE 12/05 3:00 PM
+ integration state - integrated parts with PS2-Keyboard and VGA code
+ original mapped KEY[3:1] to represent 3-bit input signal (as above), KEY[0] changed to reset (instead of SW[9])
+ debugged common anode signals when transferring KEY[3:1] to PS2 Keyboard received signals
+
+ PRESENTATION – 12/06 10:00 AM
