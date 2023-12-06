@@ -1,3 +1,6 @@
+// Author: Tristan Seto
+// Date: 2023-12-06
+
 // This file contains the top-level module for the complete project.
 
 module main(
